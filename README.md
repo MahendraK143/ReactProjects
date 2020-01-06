@@ -111,6 +111,6 @@ loval vs global: local, global
 React.memo : 
 -----------
 Useally if we have parent and child component relationship. if there is any change in parent component all the remaining child compoments will render.
-So to avoid thing problem if we use React.momo while exporting perticular component. this means if there is any change related to that component then only it will render.
+So to avoid this problem, we have to use React.momo while exporting perticular component. this means it will allow to render component if there is any changes related to that component.
 ex: export defailt React.momo(Component_name)
 
