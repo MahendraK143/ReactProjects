@@ -108,9 +108,67 @@ No of state Transitions : one or two(set methods) means useState is bettor, Too 
 Bussiness Logic: no business login in useState, Complex business login in useReducer
 loval vs global: local, global
 
-React.memo : 
+React.memo - useCallback: 
 -----------
 Useally if we have parent and child component relationship. if there is any change in parent component all the remaining child compoments will render.
-So to avoid this problem, we have to use React.momo while exporting perticular component. this means it will allow to render component if there is any changes related to that component.
+So to avoid this problem if we use React.momo while exporting perticular component. This means it will allow to render a compoment if there is any change related to that component.
 ex: export defailt React.momo(Component_name)
+
+But this will work upto some point, if we are managing relationship between parent and chaild for functions might be still we can see it will rendering multiple times. we can avoid this problem by using useCallback Hooks
+
+useCallback:
+-------------
+useCallback is a hook that will return memorized version of the callback function that only changes if one of the dependencies has changes.
+it is usefull when passing callbacks to optimized child compoments that rely on refference equality to prevent unnecessary renders
+
+import React, {useState, useCallback} from 'react';
+import Title from './Title';
+import Count from './Count';
+import Button from './Button';
+
+function ParentComponent(props) {
+    const [age, setAge] = useState(25)
+    const [salary, setSalary] = useState(50000)
+    const incrementAge = useCallback(() =>{
+        setAge(age + 1)
+    }, [age])
+    const incrementSalary = useCallback(() => {
+        setSalary(salary + 1000)
+    }, [salary]) 
+    return (
+        <div>
+            <Title />
+            <Count text = "Age" count= {age} />
+            <Button handleClick={incrementAge}>Increase Age </Button>
+            <Count text = "Salary" count= {salary} />
+            <Button handleClick={incrementSalary}>Increase Salary </Button>
+        </div>
+    );
+}
+
+
+useMemo:
+--------
+const isEven = useMemo(() => {
+        let i = 0
+        while (i < 2000000000) i++
+        return countOne % 2 == 0
+    }, [countOne])
+	
+This useMemo will render fater for some other events otherthan this isEven, b4 it will entire component taking more time for rendering.
+
+useRef
+---------
+we can define a variables which are shared local in component. and also we can use useRef for making focus on input fields
+
+const intervalRef = useRef()
+
+const inputRef = useRef(null)
+
+
+Custom Hooks:
+-------------
+A custom hook is a java function whose name start with use.
+A custom hooks also called other hooks if required.
+
 
