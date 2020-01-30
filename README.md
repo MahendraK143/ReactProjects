@@ -171,4 +171,248 @@ Custom Hooks:
 A custom hook is a java function whose name start with use.
 A custom hooks also called other hooks if required.
 
+react-router-dom
+--------------------
+DOM bindings for React Router.
 
+Installation
+Using npm:
+
+$ npm install --save react-router-dom
+Then with a module bundler like webpack, use as you would anything else:
+
+// using ES6 modules
+import { BrowserRouter, Route, Link } from "react-router-dom";
+ 
+// using CommonJS modules
+const BrowserRouter = require("react-router-dom").BrowserRouter;
+const Route = require("react-router-dom").Route;
+const Link = require("react-router-dom").Link;
+
+The UMD build is also available on unpkg:
+
+<script src="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script> 
+
+https://react-redux.js.org/api/connect
+
+connect() Parameters
+connect accepts four different parameters, all optional. By convention, they are called:
+
+mapStateToProps?: Function
+mapDispatchToProps?: Function | Object
+mergeProps?: Function
+options?: Object
+
+
+React Redux(redux is a library we can integrate this to any ui frameworks like angular, react, velacity ...)
+---------------
+Redux is a predictable state container for java script apps.(manage the state of your application in a predictable way, redux will help you)
+1. redux is javascript application
+2. redux is a state container ( to manage state between component)
+3. redux is a predictable  
+Redux stores and manage the state(state of component) of your applications
+
+Note: we can manaste state between component using React Context or useContext + useReducer (hook). but Redux 1.0 has released in 2015 when there is know context, useContext, useReducer. 
+
+React Redux pakages
+--------------------
+react-redux 
+
+create redux application:
+Create application folder and exe following cmd, it will initialize a package.json file with default values.
+ 
+>npm init --yes 
+
+> npm install redux (it will install redux library)
+
+create index.js file and write console.log 
+
+in terminal run following cmd for exe application
+>node index
+
+we can see the log statement in terminal
+
+
+Three core concepts:
+--------------------
+A Store that holds the state of your application
+an Action that describes the changes in the state of the application.
+a Reduce which actually carries out the state transition depending on the action.
+
+Three principales:
+--------------------
+1. The state of your whole application is stored in the object tree within a single store: Maintain our application state in single object which would managed by the redux store.
+2. the only way to change in state is to emit an action, an object describing what happened: to update the state of your app, you need to let Redux know about that with an action.
+3. to specify how the state tree is transformed by actions, you write pure reducers:
+reducer - (prevState, acton) => newState
+
+     javascript app ---- dispatch ------> Action ---------------> Reducer ------------> Redux Store (State) ----- subscribe ------> javascript app 
+	 
+Actions:
+--------
+Actions are the only way to your application to interact with store
+Carry some information from your app to redux store.
+Actions are plain js
+Have a type property that indicates the type of action being performed. The type property tipically defined as string constants
+
+Reducers:
+------------
+Specify how the app's state changes in response to actions sent to the store.
+
+Reducer is a function that accepts state and action arguments, and returns the next state of the your application.
+Ex: (prevState, action) => newState
+
+Redux Store:
+-------------
+One store for entire application
+Responsibilities:
+----------------
+1. Holds application state
+2. Allow access to state via getStore()
+3. Allow state to be updated via dispatch(action)
+4. Registers listeners via subscribe(listener)
+4. Handles unregistering of listeners via function return by subscribe(listener)
+
+Example:
+------------
+const redux = require('redux')
+const createStore = redux.createStore
+const combineReducers = redux.combineReducers
+
+console.log("react redux")
+
+const BUY_CAKE = 'BUY_CAKE'
+const BUY_ICE_CREAM = 'BUY_ICE_CREAM'
+
+// action is an object of type parameter atleast, rest of the parameters are upto user choise.
+function buyCake(){
+    return {
+        type : BUY_CAKE,
+        info : 'first redux application'
+    }
+}
+function buyIceCream(){
+    return {
+        type : BUY_ICE_CREAM,
+        info : 'first redux application'
+    }
+}
+
+const initialState = {
+    numOfCakes : 10,
+    numOfIceCreams : 20
+}
+
+const initialCakeState = {
+    numOfCakes : 10
+}
+
+const initialIceCreamState = {
+    numOfIceCreams : 20
+}
+
+
+// const reducer = (state = initialState, action) =>{
+//     switch(action.type) {
+//         case 'BUY_CAKE': return {
+//             ...state,
+//             numOfCakes : state.numOfCakes - 1
+//         }
+//         case 'BUY_ICE_CREAM': return {
+//             ...state,
+//             numOfIceCreams : state.numOfIceCreams - 1
+//         }
+//         default: return state
+//     }
+// }
+
+const cakeReducer = (state = initialCakeState, action) =>{
+    switch(action.type) {
+        case 'BUY_CAKE': return {
+            ...state,
+            numOfCakes : state.numOfCakes - 1
+        }
+        default: return state
+    }
+}
+const iceCreamReducer = (state = initialIceCreamState, action) =>{
+    switch(action.type) {
+        case 'BUY_ICE_CREAM': return {
+            ...state,
+            numOfIceCreams : state.numOfIceCreams - 1
+        }
+        default: return state
+    }
+}
+
+const rootReducer = combineReducers({
+    cake : cakeReducer,
+    iceCream : iceCreamReducer
+})
+const store = createStore(rootReducer)
+console.log("intial state:",store.getState())
+const unsubscribe = store.subscribe(() => console.log('update store:', store.getState(rootReducer.cake)))
+store.dispatch(buyCake())
+store.dispatch(buyCake())
+store.dispatch(buyCake())
+store.dispatch(buyIceCream())
+store.dispatch(buyIceCream())
+store.dispatch(buyIceCream())
+
+//multiple reducers
+// const cakeStore = createStore(cakeReducer)
+// console.log("intial cake state:",cakeStore.getState())
+// const cakeUnsubscribe = cakeStore.subscribe(() => console.log('update cake store:', cakeStore.getState()))
+// cakeStore.dispatch(buyCake())
+// cakeStore.dispatch(buyCake())
+// cakeStore.dispatch(buyCake())
+// cakeUnsubscribe()
+// const iceCreamStore = createStore(iceCreamReducer)
+// console.log("intial ice cream state:",iceCreamStore.getState())
+// const iceCreamUnsubscribe = iceCreamStore.subscribe(() => console.log('update ice cream store:', iceCreamStore.getState()))
+// iceCreamStore.dispatch(buyIceCream())
+// iceCreamStore.dispatch(buyIceCream())
+// iceCreamStore.dispatch(buyIceCream())
+
+// iceCreamUnsubscribe()
+
+Middleware:
+---------------
+is the suggested way to extend redux with custom functionality.
+provides a third party extension point between dispatching an action, and the moment it reaches the reducer.
+Use middleware for logging, crash reporting, performing ashynchronous tasks etc.
+
+npm install redux-logger
+ 
+ 
+Asynchronous Actions:
+----------------------
+As soon as an action was dispatched, the state state was immediately updated.
+
+Asynchronous Action creators:
+-----------------------------
+Axios
+-----
+Request to an API end point
+
+redux-thunk: basically middleware library 
+------------
+Define Async action creators
+Middleware
+
+npm install axios redux-thunk
+
+After creating react redux application:
+------------------------------------------
+npm install redux react-redux
+
+npm install --save redux-devtools-extension
+ 
+
+Redirect:
+https://reactgo.com/react-router-redirection/
+
+npm install --save react-router
+
+import { Router, Route, browserHistory } from 'react-router'
+window.sessionStorage.setItem('sum', sum)
